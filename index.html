@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EsportsHub - Professional Esports League Management</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="gradient-bg border-b border-blue-500/30 p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="orbitron text-2xl md:text-3xl font-bold text-blue-500">EsportsHub</h1>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" class="hover:text-blue-500 transition">Home</a>
+                    <a href="#" class="hover:text-blue-500 transition">Tournaments</a>
+                    <a href="#" class="hover:text-blue-500 transition">Teams</a>
+                    <a href="#" class="hover:text-blue-500 transition">News</a>
+                </div>
+                <div class="flex space-x-4">
+                    <button @click="showLoginModal = true" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition">Login</button>
+                    <button @click="showRegisterModal = true" class="bg-transparent border border-blue-500 hover:bg-blue-500/20 px-4 py-2 rounded-lg transition">Register</button>
+                </div>
+                <button class="md:hidden text-2xl"><i class="bi bi-list"></i></button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="py-16 px-4">
+            <div class="container mx-auto text-center">
+                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">Welcome to Professional<br>Esports League</h1>
+                <p class="text-lg md:text-xl text-gray-400 mb-8">Register your organization, manage teams, and compete in top-tier tournaments</p>
+                <div class="flex justify-center space-x-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg text-lg transition">Create Organization</button>
+                    <button class="bg-transparent border border-blue-500 hover:bg-blue-500/20 px-8 py-3 rounded-lg text-lg transition">View Tournaments</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Games -->
+        <section class="py-16 px-4 gradient-bg">
+            <div class="container mx-auto">
+                <h2 class="orbitron text-3xl font-bold mb-12 text-center">Featured Games</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div v-for="game in games" :key="game.id" class="game-card bg-gray-900 rounded-xl p-6 transition duration-300 neon-border">
+                        <img :src="game.image" :alt="game.name" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="orbitron text-xl font-bold mb-2">{{ game.name }}</h3>
+                        <p class="text-gray-400 mb-4">{{ game.description }}</p>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition">Join League</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tournaments Section -->
+        <section class="py-16 px-4">
+            <div class="container mx-auto">
+                <h2 class="orbitron text-3xl font-bold mb-12 text-center">Active Tournaments</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div v-for="tournament in tournaments" :key="tournament.id" class="bg-gray-900 rounded-xl p-6 neon-border">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="orbitron text-xl font-bold">{{ tournament.name }}</h3>
+                            <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm">{{ tournament.status }}</span>
+                        </div>
+                        <p class="text-gray-400 mb-4">{{ tournament.description }}</p>
+                        <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                            <span><i class="bi bi-calendar"></i> {{ tournament.date }}</span>
+                            <span><i class="bi bi-people"></i> {{ tournament.teams }} Teams</span>
+                            <span><i class="bi bi-trophy"></i> ${{ tournament.prize }}</span>
+                        </div>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition">Register Team</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="gradient-bg border-t border-blue-500/30 py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="orbitron text-xl font-bold mb-4">EsportsHub</h3>
+                        <p class="text-gray-400">Professional Esports League Management Platform</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4">Quick Links</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-blue-500">About Us</a></li>
+                            <li><a href="#" class="hover:text-blue-500">Contact</a></li>
+                            <li><a href="#" class="hover:text-blue-500">Terms of Service</a></li>
+                            <li><a href="#" class="hover:text-blue-500">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4">Games</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-blue-500">BGMI</a></li>
+                            <li><a href="#" class="hover:text-blue-500">Free Fire</a></li>
+                            <li><a href="#" class="hover:text-blue-500">Call of Duty</a></li>
+                            <li><a href="#" class="hover:text-blue-500">Valorant</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4">Connect With Us</h4>
+                        <div class="flex space-x-4 text-2xl">
+                            <a href="#" class="hover:text-blue-500"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="hover:text-blue-500"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="hover:text-blue-500"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="hover:text-blue-500"><i class="bi bi-discord"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    showLoginModal: false,
+                    showRegisterModal: false,
+                    games: [
+                        {
+                            id: 1,
+                            name: 'BGMI',
+                            description: 'Battle Royale mobile gaming championship',
+                            image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80'
+                        },
+                        {
+                            id: 2,
+                            name: 'Free Fire',
+                            description: 'Fast-paced battle royale action',
+                            image: 'https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=800&q=80'
+                        },
+                        {
+                            id: 3,
+                            name: 'Call of Duty',
+                            description: 'Professional COD mobile tournaments',
+                            image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=800&q=80'
+                        },
+                        {
+                            id: 4,
+                            name: 'Valorant',
+                            description: 'Tactical shooter championship series',
+                            image: 'https://images.unsplash.com/photo-1542751371-6533d324f6b3?auto=format&fit=crop&w=800&q=80'
+                        }
+                    ],
+                    tournaments: [
+                        {
+                            id: 1,
+                            name: 'BGMI Pro League',
+                            status: 'Registering',
+                            description: 'Monthly professional BGMI tournament',
+                            date: 'Dec 15, 2023',
+                            teams: '32',
+                            prize: '50,000'
+                        },
+                        {
+                            id: 2,
+                            name: 'Valorant Championship',
+                            status: 'Ongoing',
+                            description: 'Premier Valorant competition',
+                            date: 'Dec 20, 2023',
+                            teams: '16',
+                            prize: '25,000'
+                        },
+                        {
+                            id: 3,
+                            name: 'Free Fire Cup',
+                            status: 'Coming Soon',
+                            description: 'Quarterly Free Fire tournament',
+                            date: 'Jan 5, 2024',
+                            teams: '24',
+                            prize: '30,000'
+                        }
+                    ]
+                }
+            }
+        }).mount('#app')
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
